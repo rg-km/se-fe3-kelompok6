@@ -275,8 +275,8 @@ function checkCollision(snakes) {
         }
         countEatApple = 0
         snake1 = initSnake("purple", "snake");
-        snake2 = initSnake("black", "block");
-        snake3 = initSnake("black", "block");
+        snake2 = initSnake("blue", "block");
+        snake3 = initSnake("blue", "block");
     }
     return isCollide;
 }
