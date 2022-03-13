@@ -4,6 +4,8 @@ const CANVAS_SIZE = 600;
 const REDRAW_INTERVAL = 50;
 const WIDTH = CANVAS_SIZE / CELL_SIZE;
 const HEIGHT = CANVAS_SIZE / CELL_SIZE;
+ level-up
+
  sound-effect
 
  body-snake
@@ -25,6 +27,7 @@ bodi.src = "body.png";
 main
  main
  main
+ main
 const DIRECTION = {
     LEFT: 0,
     RIGHT: 1,
@@ -33,6 +36,10 @@ const DIRECTION = {
 }
 // Soal no 2: Pengaturan Speed (semakin kecil semakin cepat) ubah dari 150 ke 120
 const MOVE_INTERVAL = 120;
+level-up
+let countEatApple = 0;
+let level = 1;
+
  sound-effect
 
 let countEatApple = 0;
@@ -45,6 +52,7 @@ let nyawa = 3;
  main
  main
  main
+ main
 
 function initPosition() {
     return {
@@ -53,9 +61,12 @@ function initPosition() {
     }
 }
 
+level-up
+
  sound-effect
 
  body-snake
+ main
  main
 function initHeadAndBody() {
     let head = initPosition();
@@ -64,6 +75,8 @@ function initHeadAndBody() {
         head: head,
         body: body,
     }
+ level-up
+
  sound-effect
 
 
@@ -88,20 +101,26 @@ function initHeadAndBody(type) {
 
  main
  main
+ main
 }
 
 function initDirection() {
     return Math.floor(Math.random() * 4);
 }
 
+ level-up
+
  sound-effect
 
  body-snake
+ main
  main
 function initSnake(color) {
     return {
         color: color,
         ...initHeadAndBody(),
+ level-up
+
  sound-effect
 
 
@@ -111,18 +130,24 @@ function initSnake(color, type) {
         ...initHeadAndBody(type),
  main
  main
+ main
         direction: initDirection(),
         score: 0,
     }
 }
+ level-up
+
  sound-effect
 
  body-snake
+ main
  main
 let snake1 = initSnake("purple");
 let snake2 = initSnake("blue");
 // Soal no 6: add snake3
 let snake3 = initSnake("black");
+
+ level-up
 
  sound-effect
 
@@ -133,6 +158,7 @@ let snake3
  main
 
  main
+ main
 // Soal no 4: make apples array
 let apples = [{
     color: "red",
@@ -142,6 +168,8 @@ let apples = [{
     color: "green",
     position: initPosition(),
 }]
+
+ level-up
 
  sound-effect
 
@@ -169,15 +197,19 @@ function drawCell(context, x, y, color, type) {
 
   main
  main
+ main
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
+ level-up
+
  sound-effect
 
  body-snake
 
+ main
  main
  main
  main
@@ -196,6 +228,9 @@ function drawScore(snake) {
     scoreCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     scoreCtx.font = "30px Arial";
     scoreCtx.fillStyle = snake.color
+ level-up
+    scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 2);
+
  sound-effect
     scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 2);
 
@@ -209,6 +244,7 @@ function drawScore(snake) {
  main
  main
  main
+ main
 }
 
 function draw() {
@@ -217,7 +253,10 @@ function draw() {
         let ctx = snakeCanvas.getContext("2d");
 
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+level-up
+
  sound-effect
+ main
 
         drawCell(ctx, snake1.head.x, snake1.head.y, snake1.color);
         for (let i = 1; i < snake1.body.length; i++) {
@@ -233,6 +272,8 @@ function draw() {
         drawCell(ctx, snake3.head.x, snake3.head.y, snake3.color);
         for (let i = 1; i < snake3.body.length; i++) {
             drawCell(ctx, snake3.body[i].x, snake3.body[i].y, snake3.color);
+ level-up
+
 
  body-snake
         // yang diubah drawcell menjadi ctx.drawImage()
@@ -265,6 +306,7 @@ snake-life
  main
  main
  main
+ main
         }
 
         for (let i = 0; i < apples.length; i++) {
@@ -274,15 +316,20 @@ snake-life
             var img = document.getElementById("apple");
             ctx.drawImage(img, apple.position.x * CELL_SIZE, apple.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
+ level-up
+
  sound-effect
 
  body-snake
+ main
  main
 
         drawScore(snake1);
         drawScore(snake2);
         // Soal no 6: Draw Player 3 Score:
         drawScore(snake3);
+ level-up
+
  sound-effect
 
 
@@ -331,6 +378,7 @@ snake-life
         // drawScore(snake3);
  main
  main
+ main
     }, REDRAW_INTERVAL);
 }
 
@@ -358,9 +406,12 @@ function eat(snake, apples) {
             audio.play();
             apple.position = initPosition();
             snake.score++;
+ level-up
+
  sound-effect
             snake.body.push({ x: snake.head.x, y: snake.head.y });
 
+ main
             countEatApple++;
             snake.body.push({ x: snake.head.x, y: snake.head.y });
             if (countEatApple === 5) {
@@ -383,6 +434,12 @@ function eat(snake, apples) {
                 }, 300)
                 countEatApple = 0
                 level = 1
+ level-up
+                snake1 = initSnake("purple");
+                snake2 = initSnake("blue");
+                let snake3 = initSnake("black");
+            }
+
  body-snake
                 snake1 = initSnake("purple");
                 snake2 = initSnake("blue");
@@ -398,6 +455,7 @@ function eat(snake, apples) {
                 snake3 = initSnake("black", "block");
  main
             }
+ main
  main
         }
     }
@@ -430,14 +488,19 @@ function moveUp(snake) {
 function checkCollision(snakes) {
     let isCollide = false;
     //this
+ level-up
+
  sound-effect
 
  body-snake
+ main
  main
     for (let i = 0; i < snakes.length; i++) {
         for (let j = 0; j < snakes.length; j++) {
             for (let k = 1; k < snakes[j].body.length; k++) {
                 if (snakes[i].head.x == snakes[j].body[k].x && snakes[i].head.y == snakes[j].body[k].y) {
+level-up
+
  sound-effect
 
 
@@ -447,12 +510,15 @@ function checkCollision(snakes) {
                 if (snakes[i]?.head.x == snakes[j]?.body[k].x && snakes[i]?.head.y == snakes[j]?.body[k].y) {
  main
  main
+ main
                     isCollide = true;
                 }
             }
         }
     }
     if (isCollide) {
+level-up
+
  sound-effect
 
  body-snake
@@ -473,12 +539,19 @@ function checkCollision(snakes) {
 
  main
  main
+ main
         // Soal no 5: Add game over audio:
         var audio = new Audio('game-over.wav');
         audio.play();
         setTimeout(() => {
             alert("Game over");
         }, 300)
+ level-up
+        countEatApple = 0
+        level = 1
+        snake1 = initSnake("purple");
+        snake2 = initSnake("blue");
+
  sound-effect
         snake1 = initSnake("purple");
         snake2 = initSnake("blue");
@@ -493,6 +566,7 @@ function checkCollision(snakes) {
         snake1 = initSnake("purple", "snake");
         snake2 = initSnake("black", "block");
         snake3 = initSnake("black", "block");
+ main
  main
  main
     }
@@ -578,12 +652,17 @@ document.addEventListener("keydown", function (event) {
 
 function initGame() {
     move(snake1);
+ level-up
+    // move(snake2);
+    // move(snake3);
+
  sound-effect
     move(snake2);
     move(snake3);
 
     // move(snake2);
     // move(snake3);
+ main
  main
 }
 
