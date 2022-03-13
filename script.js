@@ -4,6 +4,17 @@ const CANVAS_SIZE = 600;
 const REDRAW_INTERVAL = 50;
 const WIDTH = CANVAS_SIZE / CELL_SIZE;
 const HEIGHT = CANVAS_SIZE / CELL_SIZE;
+ snake-life
+//menambahkan menjadi kepala ular
+const foodImg = new Image();
+foodImg.src = "apple.png";
+const kepala = new Image();
+kepala.src = "ular.png";
+const bodi = new Image();
+bodi.src = "body.png";
+//sampai sini
+
+main
 const DIRECTION = {
     LEFT: 0,
     RIGHT: 1,
@@ -14,6 +25,10 @@ const DIRECTION = {
 const MOVE_INTERVAL = 120;
 let countEatApple = 0;
 let level = 1;
+ snake-life
+let nyawa = 3;
+
+ main
 
 function initPosition() {
     return {
@@ -70,11 +85,32 @@ let apples = [{
     position: initPosition(),
 }]
 
+snake-life
+// function drawCell(ctx, x, y, color) {
+//     ctx.fillStyle = color;
+//     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+// }
+function drawCell(context, x, y, color, type) {
+    if (type === "snake") {
+        context.beginPath();
+        context.fillStyle = color;
+
+        context.arc(x * CELL_SIZE + 10, y * CELL_SIZE + 10, CELL_SIZE / 2, 0, 2 * Math.PI);
+        context.fill();
+    } else {
+        context.fillStyle = color;
+        context.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    }
+}
+
+
+
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
+ main
 // Soal no 6: Pada fungsi drawScore, tambahkan score3Board:
 function drawScore(snake) {
     let scoreCanvas;
@@ -90,7 +126,11 @@ function drawScore(snake) {
     scoreCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     scoreCtx.font = "30px Arial";
     scoreCtx.fillStyle = snake.color
+ snake-life
+    scoreCtx.fillText(`${snake.score}`, 10, scoreCanvas.scrollHeight / 2);
+
     scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 2);
+ main
 }
 
 function draw() {
@@ -99,10 +139,18 @@ function draw() {
         let ctx = snakeCanvas.getContext("2d");
 
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+snake-life
+        // yang diubah drawcell menjadi ctx.drawImage()
+        ctx.drawImage(kepala, snake1.head.x * CELL_SIZE, snake1.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+        for (let i = 1; i < snake1.body.length; i++) {
+            ctx.drawImage(bodi, snake1.body[i].x * CELL_SIZE, snake1.body[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
 
         drawCell(ctx, snake1.head.x, snake1.head.y, snake1.color);
         for (let i = 1; i < snake1.body.length; i++) {
             drawCell(ctx, snake1.body[i].x, snake1.body[i].y, snake1.color);
+ main
         }
 
         for (let i = 0; i < apples.length; i++) {
@@ -112,9 +160,32 @@ function draw() {
             var img = document.getElementById("apple");
             ctx.drawImage(img, apple.position.x * CELL_SIZE, apple.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
+ snake-life
+        for (let i = 0; i < nyawa; i++) {
+            // Soal no 3: DrawImage apple dan gunakan image id:
+            var heart = document.getElementById("heart");
+            ctx.drawImage(heart, 25 * i, 0, CELL_SIZE, CELL_SIZE);
+        }
+        ctx.font = "20px Arial";
+        ctx.fillText(`(level ${level})`, 0, 595);
+        // }
+        //         ctx.drawImage(heart, 0, 0, CELL_SIZE, CELL_SIZE);
+
+ main
         if (level > 1) {
             let snakeCanvas = document.getElementById("snakeBoard");
             let ctx = snakeCanvas.getContext("2d");
+
+ snake-life
+            drawCell(ctx, snake2.head.x, snake2.head.y, snake2.color, "block");
+            for (let i = 1; i < snake2.body.length; i++) {
+                drawCell(ctx, snake2.body[i].x, snake2.body[i].y, snake2.color, "block");
+            }
+
+            // Soal no 6: Draw Player 3
+            drawCell(ctx, snake3.head.x, snake3.head.y, snake3.color, "block");
+            for (let i = 1; i < snake3.body.length; i++) {
+                drawCell(ctx, snake3.body[i].x, snake3.body[i].y, snake3.color, "block");
 
             drawCell(ctx, snake2.head.x, snake2.head.y, snake2.color);
             for (let i = 1; i < snake2.body.length; i++) {
@@ -125,6 +196,7 @@ function draw() {
             drawCell(ctx, snake3.head.x, snake3.head.y, snake3.color);
             for (let i = 1; i < snake3.body.length; i++) {
                 drawCell(ctx, snake3.body[i].x, snake3.body[i].y, snake3.color);
+ main
             }
         }
         drawScore(snake1);
@@ -230,6 +302,20 @@ function checkCollision(snakes) {
         }
     }
     if (isCollide) {
+ snake-life
+        nyawa--;
+        // Soal no 5: Add game over audio:
+        if (nyawa === 0) {
+            var audio = new Audio('game-over.wav');
+            audio.play();
+            setTimeout(() => {
+                alert("Game over");
+            }, 300)
+            nyawa = 3
+            level = 1
+        }
+        countEatApple = 0
+
         // Soal no 5: Add game over audio:
         var audio = new Audio('game-over.wav');
         audio.play();
@@ -238,6 +324,7 @@ function checkCollision(snakes) {
         }, 300)
         countEatApple = 0
         level = 1
+ main
         snake1 = initSnake("purple", "snake");
         snake2 = initSnake("black", "block");
         snake3 = initSnake("black", "block");
